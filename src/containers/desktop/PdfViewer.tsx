@@ -16,6 +16,7 @@ interface Props {
   documentUrl: string;
   scale: number;
   onPageChange: (pageNumber: number) => void;
+  setScale: (scale: number) => void;
   pageNumber: number;
 }
 
@@ -62,11 +63,12 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
       return;
     }
     if( this.thumbnail.contains(e.target) ) {
+      console.log('scroll on thumbnail!')
       return;
     }
 
     if(e.originalEvent.wheelDelta /120 > 0) {
-        // console.log('scrolling up !');
+        console.log('scrolling up !');
         
         // if($(window).scrollTop() == 0) {
         if($('.editor-view').scrollTop() == 0) {
@@ -85,7 +87,7 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
         }
     }
     else{
-        // console.log('scrolling down !');
+        console.log('scrolling down !');
         
         if($('.editor-view').scrollTop() + $('.editor-view').height() > $('.document-wrapper').height()) {
           console.log('Document.tsx bottom boom!')
@@ -117,13 +119,20 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
 
 
   onDocumentLoadSuccess = (pdf) => {
+    console.log('DocumentLoadSuccess', screen.width, pdf)
     this.setState({
       numPages: pdf.numPages
     });
   };
 
   onPageLoadSuccess = (page) => {
-    // console.log('Document.tsx PageLoadSuccess')
+    console.log('Document.tsx PageLoadSuccess')
+    if(this.props.scale === undefined) {
+      const width = screen.width <= 1000 ? screen.width : $('.editor-view').width();
+      const scale = width / page.originalWidth / 1.1;
+      this.props.setScale(scale);
+    }
+    
     if(this.scrollTo !== -1) {
       document.querySelector('.editor-view').scrollTop = this.scrollTo;
       // window.scrollTo(0, this.scrollTo);
@@ -135,25 +144,34 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
   curThumbnail = null;
 
   onPageRenderSuccess = (page) => {
-    console.log('Document.tsx PageRenderSuccess')
+    // $('.editor-view canvas').css('width', '').css('height', '')
+    console.log('Document.tsx PageRenderSuccess', page)
     this.pageRendering = false;
     
     if( !this.isElementInViewport(this.curThumbnail) ) {
       console.log('ElementNotInViewport!')
 
-      let scrollTo = this.curThumbnail.offsetTop;
-      let padding = Number($(this.thumbnail).css('padding-top').replace('px', '') - 1);
-      scrollTo -= padding;
-      // this.thumbnail.scrollTo(0, scrollTo)
-      this.thumbnail.scrollTop = scrollTo;
+      if(screen.width > 1000) {
+        let scrollTo = this.curThumbnail.offsetTop;
+        let padding = Number($(this.thumbnail).css('padding-top').replace('px', '') - 1);
+        scrollTo -= padding;
+        // this.thumbnail.scrollTo(0, scrollTo)
+        this.thumbnail.scrollTop = scrollTo;
+      }
+      else {
+        let scrollTo = this.curThumbnail.offsetLeft;
+        let padding = 10;
+        scrollTo -= padding;
+        this.thumbnail.scrollLeft = scrollTo;
+      }
     }
 
     
   }
 
 
-  onThumbnailRenderSuccess = (page) => {
-  
+  onThumbnailRenderSuccess = () => {
+    $('.thumbnail canvas').css('width', '').css('height', '').css('display', '');
   }
 
   
@@ -178,15 +196,18 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
     } = this.state;
 
     const { scale } = this.props;
+    console.log('scale = ', scale)
 
 
     return (
           <React.Fragment>
             <div className="thumbnail" ref={ref => this.thumbnail = ref}>
-              <ul>
+              
                       <Document
+                        className='thumbnail-document-wrapper'
                         file={this.props.documentUrl}
                       >
+                        <ul>
                         {Array.from(
                           new Array(numPages),
                           (el, index) => (
@@ -197,6 +218,7 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
                             >
                               <a data-index={index} onClick={this.getNewPdfItem}>
                                 <Page
+                                  className='thumbnail-page-wrapper'
                                   key={`page_${index + 1}`}
                                   pageNumber={index + 1}
                                   renderMode='canvas'
@@ -204,7 +226,8 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
                                   renderAnnotationLayer={false}
                                   // onLoadSuccess={page => console.log(`thumbnail page-${page.pageNumber} loaded`)}
                                   onRenderSuccess={this.onThumbnailRenderSuccess}
-                                  scale={0.22}
+                                  // scale={0.22}
+                                  width={130}
                                 >
                                   <span className="thumbnail-label">{index + 1}</span>
                                 </Page>
@@ -212,9 +235,16 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
                             </li>
                           ),
                         )}
+                        </ul>
                       </Document>
-              </ul>
-
+                  {/* <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li>
+                  <li><div><img src="/assets/images/sample.jpg" alt=""></img></div></li> */}
             </div>
             <div className="editor-view">
               <Document
