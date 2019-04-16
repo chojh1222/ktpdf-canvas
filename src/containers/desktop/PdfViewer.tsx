@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as React from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
+import { isMobileView } from '../../util/isMobileView';
 
 
 
@@ -52,10 +53,10 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
   }
 
   handleMouseWheel = e => {
-    if(window.innerWidth <= 1000) {
-      console.log('window.innerWidth <= 1000')
+    if(isMobileView()) {
       return;
     }
+
     // console.log($(window).scrollTop(), $(window).height(), $(document).height())
     console.log($('.editor-view').scrollTop()
               , $('.editor-view').height()
@@ -155,7 +156,7 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
     if( !this.isElementInViewport(this.curThumbnail) ) {
       console.log('ElementNotInViewport!')
 
-      if(window.innerWidth > 1000) {
+      if(!isMobileView()) {
         let scrollTo = this.curThumbnail.offsetTop;
         let padding = Number($(this.thumbnail).css('padding-top').replace('px', '') - 1);
         scrollTo -= padding;
