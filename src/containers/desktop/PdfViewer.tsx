@@ -52,6 +52,10 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
   }
 
   handleMouseWheel = e => {
+    if(window.innerWidth <= 1000) {
+      console.log('window.innerWidth <= 1000')
+      return;
+    }
     // console.log($(window).scrollTop(), $(window).height(), $(document).height())
     console.log($('.editor-view').scrollTop()
               , $('.editor-view').height()
@@ -128,7 +132,7 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
   onPageLoadSuccess = (page) => {
     console.log('Document.tsx PageLoadSuccess')
     if(this.props.scale === undefined) {
-      const width = screen.width <= 1000 ? screen.width : $('.editor-view').width();
+      const width = $('.editor-view').width();
       const scale = width / page.originalWidth / 1.1;
       this.props.setScale(scale);
     }
@@ -151,7 +155,7 @@ export default class PdfViewer extends React.Component<Props, React.ComponentSta
     if( !this.isElementInViewport(this.curThumbnail) ) {
       console.log('ElementNotInViewport!')
 
-      if(screen.width > 1000) {
+      if(window.innerWidth > 1000) {
         let scrollTo = this.curThumbnail.offsetTop;
         let padding = Number($(this.thumbnail).css('padding-top').replace('px', '') - 1);
         scrollTo -= padding;
