@@ -806,7 +806,7 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
                 <li><a onClick={e => this.newInputBox('sign', e.pageX, e.pageY)}><span className="icon-stamp"></span>서명 (Stamp)</a></li>
                 <li><a onClick={e => this.newInputBox('checkbox', e.pageX, e.pageY)}><span className="icon-checklist"></span>체크항목</a></li>
                 <li><a onClick={e => this.newInputBox('radio', e.pageX, e.pageY)}><span className="icon-selected-list"></span>선택항목</a></li> */}
-                <li><a onClick={e => this.newInputBox2('text', e)}><span className="icon-insert-txt"></span>텍스트 입력</a></li>
+                {/* <li><a onClick={e => this.newInputBox2('text', e)}><span className="icon-insert-txt"></span>텍스트 입력</a></li> */}
                 <li><a onClick={e => this.newInputBox2('sign', e)}><span className="icon-stamp"></span>서명 (Stamp)</a></li>
                 <li><a onClick={e => this.newInputBox2('checkbox', e)}><span className="icon-checklist"></span>체크항목</a></li>
                 <li><a onClick={e => this.newInputBox2('radio', e)}><span className="icon-selected-list"></span>선택항목</a></li>
