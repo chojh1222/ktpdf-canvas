@@ -3,6 +3,7 @@ enum DOMAIN {
 
   HOSTNAME = 'http://localhost',
   PORT = '8888'
+  // PORT = '8888/canvas'
   
   // HOSTNAME = 'http://192.168.0.33',
   // PORT = '8080'
