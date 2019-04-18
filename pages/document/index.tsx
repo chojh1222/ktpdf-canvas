@@ -14,7 +14,6 @@ interface IDocumentProps {
   documentNo: string;
   documentUrl: string;
   signerList: Array<ISigner>;
-  
   regId: string;
   inputs:[];
 }
