@@ -5,14 +5,10 @@ import 'es6-shim';
 import Head from 'next/head';
 import 'raf/polyfill';
 import * as React from 'react';
+import { getDocumentInfo } from "../../src/api/document/getDocumentInfo";
 import DocumentContainer from '../../src/containers/desktop/Document';
-import {getDocumentInfo} from "../../src/api/document/getDocumentInfo";
-import {getDocumentInfoForSigner} from "../../src/api/signer/getDocumentInfoForSinger";
-import {ISigner} from "../../src/interface/ISigner";
-import { pdfjs } from 'react-pdf';
-import {getParameterByName} from '../../src/util/getParameterByName'
+import { ISigner } from "../../src/interface/ISigner";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface IDocumentProps {
   documentNo: string;
@@ -62,7 +58,7 @@ const defaultBackgroundColor = '#fff';
 
 class Document extends React.Component<IDocumentProps, React.ComponentState> {
 
-  /*
+  /* // node 서버에서 실행됨 (서버사이드 스크립트)
   static async getInitialProps({query}) {
 
     // 포탈에서 호출 시 시작
@@ -177,7 +173,7 @@ class Document extends React.Component<IDocumentProps, React.ComponentState> {
     // const {documentNo} = this.props;
     const {documentNo, documentUrl, signerList} = this.state;
     // const {documentUrl, signerList} = this.props;
-    const {docName, fileName} = this.state;
+    // const {docName, fileName} = this.state;
 
     const {regId} = this.props;
     // console.log("regId : " + regId);
@@ -203,8 +199,8 @@ class Document extends React.Component<IDocumentProps, React.ComponentState> {
           documentUrl={documentUrl}
           signerList={users}
           documentNo={documentNo}
-          docName={docName}
-          fileName={fileName}
+          // docName={docName}
+          // fileName={fileName}
           userId={regId}
           inputs={inputs}          
         />
