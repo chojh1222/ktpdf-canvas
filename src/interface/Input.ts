@@ -13,7 +13,7 @@ export interface Input {
 
 export interface TextInput extends Input {
     font: string;
-    charSize: string;
+    charSize: number;
 }
 
 export interface SignInput extends Input {
@@ -30,7 +30,8 @@ export interface RadioInput extends Input {
 
 export interface MemoInput extends Input {
     font: string;
-    charSize: string;
+    charSize: number;
     minW: number;
     minH: number;
+    gbnCd: string;
 }
