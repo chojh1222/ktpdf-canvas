@@ -102,7 +102,7 @@ class ContractContainer extends React.Component<IContractProps, React.ComponentS
 
   isMust = (input): boolean => {
     const {inputType} = input;
-    return inputType === 'text' || inputType === 'radio' || inputType === 'sign';
+    return inputType === 'radio';
   }
 
   isEmpty = (input): boolean => {
