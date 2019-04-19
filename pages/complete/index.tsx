@@ -58,8 +58,10 @@ class Complete extends React.Component<any, React.ComponentState> {
     const { documentNo } = this.state;
     const { signer, inputs, documentUrl } = this.state;
     
-    //console.log("inputs.length : " + inputs.length);
-    //if(inputs.length < 1) return null;
+
+    if(inputs != undefined){
+      if(inputs.length < 1) return null;
+    }
 
     return(
       <div>
