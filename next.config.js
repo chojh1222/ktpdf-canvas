@@ -6,6 +6,7 @@ module.exports = withTypescript(withCSS({
         importLoaders: 1,
         localIdentName: "[local]___[hash:base64:5]",
     },
+    assetPrefix: '/canvas',
     // target: 'serverless'
 }));
 
