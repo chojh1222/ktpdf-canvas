@@ -76,6 +76,23 @@ class ContractContainer extends React.Component<IContractProps, React.ComponentS
     this.setState({ inputs: newInputs });
   }
 
+  selectRadio = (gbnCd, index) => {
+    const { inputs } = this.state;
+    const newInputs = inputs.map((input, idx) => {
+      if(input.gbnCd != gbnCd) {
+        return input;
+      }
+      let ret = {...input};
+      if(index != idx) {
+        ret.addText = '0';
+        return ret; 
+      }
+      ret.addText = '1';
+      return ret;
+    });
+    this.setState({ inputs: newInputs });
+  }
+
   emptyInputCnt = (): number => {
     const {inputs} = this.state;
     let cnt = 0;
@@ -448,6 +465,7 @@ class ContractContainer extends React.Component<IContractProps, React.ComponentS
                           scale={scale}
                           onInputboxAreaMouseUp={this.onInputboxAreaMouseUp}
                           focusInput={focusInput}
+                          selectRadio={this.selectRadio}
                         />
               </PdfViewer>
 

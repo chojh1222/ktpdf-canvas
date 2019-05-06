@@ -27,5 +27,5 @@ export interface CheckBox extends InputBox {
 }
 
 export interface RadioBox extends InputBox {
-
+    gbnCd: number;
 }

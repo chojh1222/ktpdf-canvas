@@ -5,6 +5,7 @@ import { InputBox, TextBox, SignBox, CheckBox, RadioBox } from 'src/interface/In
 import { ISigner } from 'src/interface/ISigner';
 import BoxWithCheckbox from './BoxWithCheckbox';
 import BoxWithRadio from './BoxWithRadio';
+import BoxWithRadio2 from './BoxWithRadio2';
 
 interface Props {
   boxDataList: Array<InputBox>;
@@ -14,6 +15,8 @@ interface Props {
   page: number;
   scale: number;
   onInutboxAreaMouseUp: (e: React.MouseEvent) => void;
+  addRadioButton: (nextTo: RadioBox) => void;
+  deleteRadioGroup: (groupNum: number) => void;
 }
 
 class ContainerForBoxes extends Component<Props, null> {
@@ -85,13 +88,15 @@ class ContainerForBoxes extends Component<Props, null> {
 
             else if(box.type === 'radio') {
               return (
-                <BoxWithRadio
+                <BoxWithRadio2
                   key={`${box.boxIndex}${box.type}`}
                   boxData={box as RadioBox}
                   users={users}
                   updateInputBox={updateInputBox}
                   deleteInputBox={deleteInputBox}
                   scale={scale}
+                  addRadioButton={this.props.addRadioButton}
+                  deleteRadioGroup={this.props.deleteRadioGroup}
                 />
               )
             }

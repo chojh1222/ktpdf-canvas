@@ -25,7 +25,6 @@ class BoxWithTextArea extends Component<Props, any> {
     this.state = {
       isShowPopup: false,
       zIndex: defaultZIndex,
-      showCloseBtn: false,
     };
   }
 

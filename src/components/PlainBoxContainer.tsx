@@ -23,6 +23,7 @@ interface IBoxContainerProps {
   scale: number;
   onInputboxAreaMouseUp: (e: React.MouseEvent) => void;
   focusInput: Input;
+  selectRadio: (gbnCd: string, index: number) => void;
 }
 
 class PlainBoxContainer extends React.Component<IBoxContainerProps, React.ComponentState> {
@@ -138,6 +139,7 @@ class PlainBoxContainer extends React.Component<IBoxContainerProps, React.Compon
                 editable={editable}
                 scale={scale}
                 focused={focused}
+                selectRadio={this.props.selectRadio}
               />
             )
           }

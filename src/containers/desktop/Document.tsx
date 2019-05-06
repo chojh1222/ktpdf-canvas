@@ -12,6 +12,7 @@ import PdfViewer from "./PdfViewer";
 
 // 입력박스 카운터 - 새 입력박스의 boxIndex를 할당하는데 사용됨
 let boxCnt = 0;
+let radioGroupCnt = 0;
 
 // 입력박스 기본값
 const defaultData = {
@@ -85,11 +86,13 @@ const getInitRadioBox = (page, signerIndex): RadioBox => {
     type: 'radio',
     top: defaultData.top,
     left: defaultData.signLeft,
-    width: 100,
+    // width: 100,
+    width: 20,
     height: 20,
     signerIndex,
     page,
     boxIndex: boxCnt++,
+    gbnCd: undefined,
     minWidth: defaultData.radioboxMinWidth,
     minHeight: undefined,
     maxWidth: undefined,
@@ -320,11 +323,44 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
     initBoxData.width = width;
     initBoxData.height = height;
 
-    copyBoxDataList.push(initBoxData);
+    if(type == 'radio') {
+      let radio2 = getInitRadioBox(pageNumber, selectSignerIndex);
+      radio2.left = left + 60;
+      radio2.top = top;
+      radio2.width = width;
+      radio2.height = height;
+      
+      radioGroupCnt++;
+      radio2.gbnCd = radioGroupCnt;
+      initBoxData.gbnCd = radioGroupCnt;
 
+      copyBoxDataList.push(radio2);
+    }
+
+    copyBoxDataList.push(initBoxData);    
     this.setState({
       boxDataList: copyBoxDataList,
     });
+  }
+
+  addRadioButton = (nextTo: RadioBox) => {
+    let newRadioBox = getInitRadioBox(nextTo.page, nextTo.signerIndex);
+    newRadioBox.left = nextTo.left + 30;
+    newRadioBox.top = nextTo.top;
+    newRadioBox.width = nextTo.width;
+    newRadioBox.height = nextTo.height;
+    newRadioBox.gbnCd = nextTo.gbnCd;
+
+    this.addInputbox(newRadioBox);
+  }
+
+  deleteRadioGroup = (groupNum: number) => {
+    const { boxDataList } = this.state;
+    const newBoxDataList = boxDataList.filter((box) => {
+      return !(box.type == 'radio' && box.gbnCd == groupNum);
+    });
+
+    this.setState({boxDataList: newBoxDataList});
   }
 
   addInputbox = (inputbox: InputBox) => {
@@ -350,8 +386,12 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
   private updateInputBox(boxIndex: number, update: object) {
     console.log('Document.tsx updateInputBox');
     const {boxDataList} = this.state;
-    const newBoxDataList = boxDataList.map(box => {
+    let updateboxType;
+    let updateboxGbnCd;
+    let newBoxDataList = boxDataList.map(box => {
       if(box.boxIndex === boxIndex) {
+        updateboxType = box.type;
+        updateboxGbnCd = box.gbnCd;
         return {
           ...box,
           ...update
@@ -360,6 +400,21 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
 
       return box;
     });
+
+    // 라디오 리사이즈일때 같은 그룹의 다른 라디오 박스도 같이 리사이즈함
+    // if(updateboxType == 'radio' && (update.hasOwnProperty('width') || update.hasOwnProperty('height'))) {
+    //   newBoxDataList = boxDataList.map(box => {
+    //     if(box.type === 'radio' && box.gbnCd === updateboxGbnCd) {
+    //       return {
+    //         ...box,
+    //         ...update
+    //       }
+    //     }
+  
+    //     return box;
+    //   });
+    // }
+    
 
     this.setState({boxDataList: newBoxDataList});
   }
@@ -471,7 +526,8 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
         page,
         signerIndex,
         width,
-        height
+        height,
+        gbnCd,
       } = data;
 
       const x = left;
@@ -487,7 +543,8 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
         x,
         y,
         w,
-        h
+        h,
+        gbnCd,
       }
     });
 
@@ -714,6 +771,8 @@ class DocumentContainer extends React.Component<IDocumentProps, React.ComponentS
                           page={pageNumber}
                           scale={scale}
                           onInutboxAreaMouseUp={this.onInutboxAreaMouseUp}
+                          addRadioButton={this.addRadioButton}
+                          deleteRadioGroup={this.deleteRadioGroup}
                         />
             </PdfViewer>
 

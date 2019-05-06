@@ -11,6 +11,7 @@ interface IBoxForCheckboxProps {
   editable: boolean;
   scale: number;
   focused: boolean;
+  selectRadio: (gbnCd: string, index: number) => void;
 }
 
 class PlainBoxForRadio extends React.Component<IBoxForCheckboxProps, React.ComponentState> {
@@ -30,6 +31,11 @@ class PlainBoxForRadio extends React.Component<IBoxForCheckboxProps, React.Compo
     console.log('toggleCheckbox')
     console.log(checked, boxIndex)
     updateTextArea(boxIndex, !checked);
+  }
+
+  checkRadioButton = e => {
+    const {input, selectRadio, boxIndex} = this.props;
+    selectRadio(input.gbnCd, boxIndex);
   }
 
   checkFirstRadioButton = e => {
@@ -176,32 +182,16 @@ class PlainBoxForRadio extends React.Component<IBoxForCheckboxProps, React.Compo
         ? (
           <IconContext.Provider value={radioiconFirst}>
             <IoMdRadioButtonOn 
-              onClick={this.checkFirstRadioButton}
+              onClick={this.checkRadioButton}
             />
           </IconContext.Provider>
         )
         : (
           <IconContext.Provider value={radioiconFirst}>
             <IoMdRadioButtonOff 
-              onClick={this.checkFirstRadioButton}
+              onClick={this.checkRadioButton}
             />
           </IconContext.Provider>
-        )}
-        
-        {radioSelection == '2' 
-        ? (
-          <IconContext.Provider value={radioiconSecond}>
-            <IoMdRadioButtonOn 
-              onClick={this.checkSecondRadioButton}
-            />
-          </IconContext.Provider>         
-        )
-        : ( 
-          <IconContext.Provider value={radioiconSecond}>
-            <IoMdRadioButtonOff 
-              onClick={this.checkSecondRadioButton}
-            />
-          </IconContext.Provider>         
         )}
         
       </div>

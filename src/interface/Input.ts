@@ -25,7 +25,7 @@ export interface CheckInput extends Input {
 }
 
 export interface RadioInput extends Input {
-
+    gbnCd: string;
 }
 
 export interface MemoInput extends Input {

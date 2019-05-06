@@ -88,7 +88,6 @@ class BoxWithCheckbox extends Component<Props, any> {
 
 
 
-    const { isShowPopup, showCloseBtn } = this.state;
     const { backgroundColor } = users[signerIndex];
 
     const checkicon = {
