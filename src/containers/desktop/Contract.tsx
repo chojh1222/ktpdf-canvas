@@ -453,12 +453,12 @@ class ContractContainer extends React.Component<IContractProps, React.ComponentS
 
             
             <div className="edit-pallet">
-              <div>
+              {/* <div>
                 입력완료 : {this.totalInputCnt() - this.emptyInputCnt()} / {this.totalInputCnt()}
                 <button style={{marginLeft: '10px'}}
                   onClick={this.showNextEmptyInput}
                 >미입력>></button>
-              </div>
+              </div> */}
               
               <ul>
                 {/* <li><a onClick={this.newMemo}><span className="icon-memo"></span>메모 입력</a></li> */}
