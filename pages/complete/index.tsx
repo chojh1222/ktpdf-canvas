@@ -46,9 +46,8 @@ class Complete extends React.Component<any, React.ComponentState> {
     const { documentNo } = this.props;
     const { signer, inputs, documentUrl } = this.state;
     
-
     if(inputs != undefined){
-      if(inputs.length < 1) return null;
+      //if(inputs.length < 1) return null;
     }
 
     return(
